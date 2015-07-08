@@ -25,6 +25,8 @@ appStream = App.find().stream()
 appStream.on "data", (doc) ->
   doc = doc.toJSON()
   brands = doc.list
+  unless doc.categories[2]?
+    console.log doc.categories
   for brand in brands
     client.sadd("brands", brand, redis.print)
     client.sadd("categories", doc.categories[2], redis.print)
