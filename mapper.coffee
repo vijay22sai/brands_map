@@ -27,10 +27,11 @@ appStream.on "data", (doc) ->
   brands = doc.list
   unless doc.categories[2]?
     console.log doc.categories
+    console.log brands
   for brand in brands
-    client.sadd("brands", brand, redis.print)
-    client.sadd("categories", doc.categories[2], redis.print)
-    client.sadd(brand, doc.categories[2], redis.print)
+    client.sadd("brands", brand)
+    client.sadd("categories", doc.categories[2])
+    client.sadd(brand, doc.categories[2])
 #  process.exit()
 
 appStream.on "error", (err) ->
