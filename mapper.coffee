@@ -26,6 +26,7 @@ appStream.on "data", (doc) ->
   doc = doc.toJSON()
   brands = doc.list
   for brand in brands
+    client.sadd("brands", brand, redis.print)
     client.sadd(brand, doc.categories[2], redis.print)
 #  process.exit()
 
