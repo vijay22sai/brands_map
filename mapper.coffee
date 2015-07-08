@@ -29,9 +29,9 @@ appStream.on "data", (doc) ->
     console.log doc.categories
     console.log brands
   for brand in brands
-    client.sadd("brands", brand)
-    client.sadd("categories", doc.categories[2])
-    client.sadd(brand, doc.categories[2])
+    client.sadd("brands", brand, (err) -> console.log(err) if err?)
+    client.sadd("categories", doc.categories[2], (err) -> console.log(err) if err?)
+    client.sadd(brand, doc.categories[2], (err) -> console.log(err) if err?)
 #  process.exit()
 
 appStream.on "error", (err) ->
