@@ -16,7 +16,7 @@ mongoose.connection.on 'error', (err) ->
 client = redis.createClient(6379, host, {})
 
 client.on "error", (err) ->
-      console.log("Error " + err)
+  console.log("Error " + err)
 
 App = mongoose.model("App", {}, "category_brands")
 
