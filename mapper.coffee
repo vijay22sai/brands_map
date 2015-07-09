@@ -25,14 +25,21 @@ appStream = App.find().stream()
 appStream.on "data", (doc) ->
   doc = doc.toJSON()
   brands = doc.list
-  unless doc.categories[2]?
-    console.log doc.categories
+  category = doc.categories[2]
+  if category?
+    category = category.toLowerCase()
+  else
+    console.log category
     console.log brands
+
   for brand in brands
+    brand = brand.toLowerCase()
     client.sadd("brands", brand, (err) -> console.log(err) if err?)
-    client.sadd("categories", doc.categories[2], (err) -> console.log(err) if err?)
-    client.sadd(brand, doc.categories[2], (err) -> console.log(err) if err?)
-#  process.exit()
+    client.sadd("flipkart_brands", brand, (err) -> console.log(err) if err?)
+    if category?
+      client.sadd("categories", category, (err) -> console.log(err) if err?)
+      client.sadd("flipkart_categories", category, (err) -> console.log(err) if err?)
+      client.sadd(brand, category, (err) -> console.log(err) if err?)
 
 appStream.on "error", (err) ->
   console.log err
@@ -40,13 +47,3 @@ appStream.on "error", (err) ->
 appStream.on "close", () ->
   console.log "stream is closed"
 
-
-
-#
-#db = mongojs('local/anabelle')
-#
-#apps = db.collection('apps')
-#
-#apps.find (err, docs) ->
-#  console.log err
-#  console.log docs
