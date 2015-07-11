@@ -30,12 +30,14 @@ client.hgetall "category_fashion_map", (err, map) ->
       brand = brands[i]
       client.smembers brand, (err, categories) ->
         for category in categories
-          if(map["#{category}"] == "1")
-            return client.hset "brand_fashion_map", brand, true, (err) ->
-              pos++
+          if(map["#{category}"] == "0")
+            return client.hset "brand_fashion_map", brand, false, (err) ->
+              neg++
               console.log(err) if err?
               finishIteration()
-        client.hset "brand_fashion_map", brand, false, (err) ->
-          neg++
+        client.hset "brand_fashion_map", brand, true, (err) ->
           console.log(err) if err?
-          finishIteration()
+          client.sadd "fashion_brands", brand, (err) ->
+            pos++
+            console.log(err) if err?
+            finishIteration()
