@@ -29,6 +29,8 @@ client.hgetall "category_fashion_map", (err, map) ->
     do iterate = () ->
       brand = brands[i]
       client.smembers brand, (err, categories) ->
+        if(categories.length == 1 and categories[0]=="all")
+          return finishIteration()
         for category in categories
           if(map["#{category}"] == "0")
             return client.hset "brand_fashion_map", brand, false, (err) ->
